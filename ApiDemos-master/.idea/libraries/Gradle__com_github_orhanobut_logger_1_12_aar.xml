@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.orhanobut:logger:1.12@aar">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../caches/transforms-2/files-2.1/f66944f5e57555524b83e1f8b09855b4/logger-1.12/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../../caches/transforms-2/files-2.1/f66944f5e57555524b83e1f8b09855b4/logger-1.12/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../caches/transforms-2/files-2.1/f66944f5e57555524b83e1f8b09855b4/logger-1.12/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

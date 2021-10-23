@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">简单列表</string>
+    <string name="button_ok">确定</string>
+    <string name="name">名称</string>
+</resources>
