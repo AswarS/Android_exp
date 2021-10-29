@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">ListView</string>
-    <string name="book_1">软件项目管理案例教程（第4版）</string>
-    <string name="book_2">信息安全数学基础（第2版）</string>
-    <string name="book_no_name">创新工程实践</string>
-    <string name="name">Name</string>
-    <string name="button_ok">OK</string>
-</resources>
