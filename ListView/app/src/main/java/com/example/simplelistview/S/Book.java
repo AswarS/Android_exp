@@ -2,11 +2,11 @@ package com.example.simplelistview.S;
 
 import java.io.Serializable;
 
-public class Cat implements Serializable {
+public class Book implements Serializable {
     private int imageResourceId;
     private String name;
 
-    public Cat(String name, int imageResourceId) {
+    public Book(String name, int imageResourceId) {
         this.name=name;
         this.imageResourceId=imageResourceId;
     }

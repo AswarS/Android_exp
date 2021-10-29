@@ -2,31 +2,29 @@ package com.example.simplelistview.S;
 
 import android.content.Context;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.security.PublicKey;
 import java.util.ArrayList;
 
 public class  Databunk
 {
     private  Context context;
     private final String CAT_FILE_NAME="Cat.txt";
-    private ArrayList<Cat> catArrayList=new ArrayList<>();
+    private ArrayList<Book> bookArrayList =new ArrayList<>();
 
     public Databunk(Context context){
         this.context=context;
     }
 
-    public ArrayList<Cat> getCat(){
-        return catArrayList;
+    public ArrayList<Book> getCat(){
+        return bookArrayList;
     }
     public void save()  {
         ObjectOutputStream outputStream=null;
         try {
             outputStream = new ObjectOutputStream(context.openFileOutput("Cat.txt", Context.MODE_PRIVATE));
-            outputStream.writeObject(catArrayList);
+            outputStream.writeObject(bookArrayList);
             outputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -37,7 +35,7 @@ public class  Databunk
         ObjectInputStream inputStream=null;
         try {
             inputStream = new ObjectInputStream(context.openFileInput("Cat.txt"));
-            catArrayList = (ArrayList<Cat>) inputStream.readObject();
+            bookArrayList = (ArrayList<Book>) inputStream.readObject();
             inputStream.close();
         } catch (Exception e) {
             e.printStackTrace();

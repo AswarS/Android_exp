@@ -6,7 +6,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.*;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,9 +19,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.simplelistview.S.Cat;
+import com.example.simplelistview.S.Book;
 import com.example.simplelistview.S.Databunk;
 
 import java.util.ArrayList;
@@ -38,10 +36,10 @@ public class SimpleListMainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_ADD_CAT = 100;
     private static final int REQUEST_CODE_UPDATE_CAT = 101;
 
-    private String[] data = {"暹罗猫", "布偶猫", "折耳猫"};
-    private int[] imageData={R.drawable.cat1,R.drawable.cat2,R.drawable.cat3};
+    private final String[] data = {"软件项目管理案例教程（第4版）", "创新工程实践", "信息安全数学基础（第2版）"};
+    private final int[] imageData={R.drawable.book_2,R.drawable.book_no_name,R.drawable.book_1};
     private Databunk databunk;
-    private ArrayList<Cat> arrayListCats;
+    private ArrayList<Book> arrayListBooks;
     private CatAdapter adapter;
 
     @Override
@@ -74,7 +72,7 @@ public class SimpleListMainActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     String cat_name = data.getStringExtra("cat_name");
                     int position=data.getIntExtra("cat_position",0);
-                    arrayListCats.add(position,new Cat(cat_name,R.drawable.cat2));
+                    arrayListBooks.add(position,new Book(cat_name,R.drawable.book_no_name));
                     databunk.save();
                     adapter.notifyDataSetChanged();
                 }
@@ -83,7 +81,7 @@ public class SimpleListMainActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     String cat_name = data.getStringExtra("cat_name");
                     int position=data.getIntExtra("cat_position",0);
-                    arrayListCats.get(position).setName(cat_name);
+                    arrayListBooks.get(position).setName(cat_name);
                     databunk.save();
                     adapter.notifyDataSetChanged();
                 }
@@ -113,18 +111,18 @@ public class SimpleListMainActivity extends AppCompatActivity {
             case CONTEXT_MENU_ITEM_UPDATE:
                 intent = new Intent(SimpleListMainActivity.this, InputUpdateActivity.class);
                 intent.putExtra("position",position);
-                intent.putExtra("cat_name",arrayListCats.get(position).getName() );
+                intent.putExtra("cat_name", arrayListBooks.get(position).getName() );
                 startActivityForResult(intent, REQUEST_CODE_UPDATE_CAT);
                 break;
             case CONTEXT_MENU_ITEM_DELETE:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("询问");
-                builder.setMessage("你确定要删除\""+arrayListCats.get(position).getName() + "\"？");
+                builder.setMessage("你确定要删除\""+ arrayListBooks.get(position).getName() + "\"？");
                 builder.setCancelable(true);
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        arrayListCats.remove(position);
+                        arrayListBooks.remove(position);
                         adapter.notifyDataSetChanged();
                     }
                 });  //正面的按钮（肯定）
@@ -142,7 +140,7 @@ public class SimpleListMainActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        adapter = new CatAdapter(this, R.layout.item_cat,  arrayListCats);
+        adapter = new CatAdapter(this, R.layout.item_cat, arrayListBooks);
 
         ListView listViewCats=findViewById(R.id.listview_books);
         listViewCats.setAdapter(adapter);
@@ -153,16 +151,17 @@ public class SimpleListMainActivity extends AppCompatActivity {
     private void initData() {
         databunk=new Databunk(this);
         databunk.load();
-        arrayListCats=databunk.getCat();
-        if(arrayListCats.size()==0)
-            arrayListCats.add(new Cat("请添加一个猫", R.drawable.cat1));
+        arrayListBooks =databunk.getCat();
+        arrayListBooks.add(new Book("软件项目管理案例教程（第4版）", R.drawable.book_2));
+        arrayListBooks.add(new Book("创新工程实践", R.drawable.book_no_name));
+        arrayListBooks.add(new Book("信息安全数学基础（第2版）", R.drawable.book_1));
     }
 
 
-    private class CatAdapter extends ArrayAdapter<Cat> {
+    private class CatAdapter extends ArrayAdapter<Book> {
         private int resourceId;
 
-        public CatAdapter(@NonNull Context context, int resource, @NonNull List<Cat> objects) {
+        public CatAdapter(@NonNull Context context, int resource, @NonNull List<Book> objects) {
             super(context, resource,objects);
             this.resourceId=resource;
         }
@@ -170,21 +169,15 @@ public class SimpleListMainActivity extends AppCompatActivity {
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            Cat cat = getItem(position);//获取当前项的实例
+            Book book = getItem(position);//获取当前项的实例
             View view;
             if(null==convertView)
                 view = LayoutInflater.from(getContext()).inflate(this.resourceId, parent, false);
             else
                 view=convertView;
-            ((ImageView) view.findViewById(R.id.image_view_cat)).setImageResource(cat.getImageResourceId());
-            ((TextView) view.findViewById(R.id.text_view_name_cat)).setText(cat.getName());
+            ((ImageView) view.findViewById(R.id.image_view_cat)).setImageResource(book.getImageResourceId());
+            ((TextView) view.findViewById(R.id.text_view_name_cat)).setText(book.getName());
             return view;
         }
     }
 }
-
-
-
-
-//Android数据持久化储存数据的5种方法。
-//ANdroid序列化总结
