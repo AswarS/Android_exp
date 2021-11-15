@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.myapplication.entity.Book;
+import com.example.myapplication.entity.DataBunk;
 
 import java.util.ArrayList;
 
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     private MyAdapter adapter;
     private ArrayList<Book> arrayListBooks;
+    private DataBunk dataBunk;
 
     private static final int MENU_NEW = 1;
     private static final int MENU_APPEND = MENU_NEW +1;
@@ -42,26 +44,32 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        init();
+        initDate();
+        initView();
 
     }
 
-    private void init(){
+    private void initView(){
         RecyclerView recyclerView = findViewById(R.id.recycle_view_books);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
-        adapter = new MyAdapter(getListBooks());
+        adapter = new MyAdapter(arrayListBooks);
         //设置适配器
         recyclerView.setAdapter(adapter);
-
         recyclerView.setLongClickable(true);
-
         this.registerForContextMenu(recyclerView);
     }
 
+    private void initDate(){
+        dataBunk=new DataBunk(this);
+        dataBunk.load();
+        arrayListBooks =dataBunk.getBook();
+    }
+
+
     public static class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-        private ArrayList<Book> dataList;
+        private final ArrayList<Book> dataList;
         private int position;
 
         public int getPosition(){
@@ -89,12 +97,9 @@ public class MainActivity extends AppCompatActivity {
             holder.cover.setImageResource(book.getResourceId());
             holder.title.setText(book.getTitle());
 
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    setPosition(holder.getLayoutPosition());
-                    return false;
-                }
+            holder.itemView.setOnLongClickListener(v -> {
+                setPosition(holder.getLayoutPosition());
+                return false;
             });
         }
 
@@ -125,12 +130,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private ArrayList<Book> getListBooks() {
-        arrayListBooks = new ArrayList<>();
-
-        arrayListBooks.add(new Book("软件项目管理案例教程（第4版）", R.drawable.book_2));
-        arrayListBooks.add(new Book("创新工程实践", R.drawable.book_no_name));
-        arrayListBooks.add(new Book("信息安全数学基础（第2版）", R.drawable.book_1));
-
+        dataBunk=new DataBunk(this);
+        dataBunk.load();
+        arrayListBooks =dataBunk.getBook();
         return arrayListBooks;
     }
 
@@ -182,17 +184,21 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_ADD:
                 if (resultCode == RESULT_OK) {
+                    assert data != null;
                     String book_title = data.getStringExtra("book_title");
                     int position=data.getIntExtra("book_position",0);
                     arrayListBooks.add(position,new Book(book_title,R.drawable.book_no_name));
+                    dataBunk.save();
                     adapter.notifyDataSetChanged();
                 }
                 break;
             case REQUEST_UPDATE:
                 if (resultCode == RESULT_OK) {
+                    assert data != null;
                     String book_title = data.getStringExtra("book_title");
                     int position=data.getIntExtra("book_position",0);
                     arrayListBooks.get(position).setTitle(book_title);
+                    dataBunk.save();
                     adapter.notifyDataSetChanged();
                 }
                 break;
@@ -200,5 +206,4 @@ public class MainActivity extends AppCompatActivity {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
 }

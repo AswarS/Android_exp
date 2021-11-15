@@ -25,17 +25,14 @@ public class InputUpdateActivity extends AppCompatActivity {
         if(null!= BookName)
             editTextBookName.setText(BookName);
 
-        Button buttonOk = (Button)findViewById(R.id.button_ok);
-        buttonOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
+        Button buttonOk = findViewById(R.id.button_ok);
+        buttonOk.setOnClickListener(v -> {
+            Intent intent = new Intent();
 
-                intent.putExtra("book_title", editTextBookName.getText().toString());
-                intent.putExtra("book_position",position);
-                setResult(RESULT_OK, intent);
-                finish();
-            }
+            intent.putExtra("book_title", editTextBookName.getText().toString());
+            intent.putExtra("book_position",position);
+            setResult(RESULT_OK, intent);
+            finish();
         });
     }
 }
