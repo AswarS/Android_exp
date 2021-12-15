@@ -13,6 +13,7 @@ import android.os.Bundle;
 
 import com.example.myapplication.entity.DataBunk;
 import com.example.myapplication.fragment.BookFragment;
+import com.example.myapplication.fragment.MapFragment;
 import com.example.myapplication.fragment.WebFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -32,11 +33,11 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<String> titles = new ArrayList<>();
         titles.add("图书");
         titles.add("新闻");
-        titles.add("卖家");
+        titles.add("地图");
 
         fragments.add(new BookFragment());
         fragments.add(new WebFragment());
-        fragments.add(new WebFragment());
+        fragments.add(new MapFragment());
 
         TabLayout mTabLayout = findViewById(R.id.tab_layout);
         ViewPager2 mViewPage = findViewById(R.id.view_pager);
